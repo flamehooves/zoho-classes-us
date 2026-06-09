@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zoho Classes — Ditch Your Legacy LMS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --indigo: #4f46e5;
+    --indigo-dark: #3730a3;
+    --indigo-600: #4f46e5;
+    --indigo-50: #eef2ff;
+    --indigo-100: #e0e7ff;
+    --indigo-200: #c7d2fe;
+    --amber: #f59e0b;
+    --amber-50: #fffbeb;
+    --amber-100: #fef3c7;
+    --green: #059669;
+    --green-50: #ecfdf5;
+    --green-100: #d1fae5;
+    --red: #dc2626;
+    --bg: #ffffff;
+    --bg2: #fafaf9;
+    --bg3: #f5f4ff;
+    --surface: rgba(79,70,229,0.05);
+    --border: #e8e7fb;
+    --border-med: #d1d0f5;
+    --text: #111827;
+    --text-muted: #6b7280;
+    --text-dim: #9ca3af;
+    --white: #ffffff;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.07), 0 2px 6px rgba(0,0,0,0.04);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.09), 0 4px 12px rgba(0,0,0,0.05);
+    --shadow-xl: 0 24px 60px rgba(79,70,229,0.14), 0 8px 20px rgba(79,70,229,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; line-height: 1.6; }
+
+  /* ── NAV ─────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 6%; height: 64px;
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo-icon { width: 32px; height: 32px; background: var(--indigo); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+  .nav-logo-icon svg { width: 17px; height: 17px; fill: white; }
+  .nav-logo-text { font-size: 1rem; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+  .nav-logo-text span { color: var(--indigo); }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-link { font-size: 0.85rem; font-weight: 500; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .nav-link:hover { color: var(--indigo); }
+  .nav-actions { display: flex; gap: 10px; align-items: center; }
+  .btn-nav-ghost { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); padding: 8px 16px; border-radius: 8px; text-decoration: none; border: 1px solid var(--border); transition: all 0.2s; }
+  .btn-nav-ghost:hover { border-color: var(--indigo-200); color: var(--indigo); }
+  .btn-nav-primary { font-size: 0.85rem; font-weight: 700; background: var(--indigo); color: white; padding: 9px 20px; border-radius: 8px; text-decoration: none; transition: all 0.2s; box-shadow: 0 2px 8px rgba(79,70,229,0.25); }
+  .btn-nav-primary:hover { background: var(--indigo-dark); }
+  @media(max-width:768px){ .nav-links{display:none} .btn-nav-ghost{display:none} }
+
+  /* ── HERO ─────────────────────── */
+  .hero {
+    padding: 140px 6% 80px;
+    position: relative; overflow: hidden;
+    background: var(--bg);
+  }
+  /* Subtle mesh background */
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 600px 400px at 80% 20%, rgba(79,70,229,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 400px 300px at 10% 80%, rgba(245,158,11,0.05) 0%, transparent 60%);
+  }
+  .hero-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; position: relative; z-index: 1; }
+  @media(max-width:900px){ .hero-inner { grid-template-columns: 1fr; gap: 52px; } }
+
+  .hero-kicker {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--amber-50); border: 1px solid var(--amber-100);
+    color: #92400e; font-size: 0.75rem; font-weight: 700;
+    padding: 5px 13px; border-radius: 100px; letter-spacing: 0.05em;
+    text-transform: uppercase; margin-bottom: 22px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .hero-kicker .fire { font-size: 0.9rem; }
+  .hero h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(2.8rem, 5vw, 4.4rem);
+    line-height: 1.08; letter-spacing: -0.02em;
+    color: var(--text); margin-bottom: 24px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  .hero h1 .strike {
+    text-decoration: line-through;
+    text-decoration-color: var(--red);
+    text-decoration-thickness: 3px;
+    color: var(--text-muted);
+  }
+  .hero h1 .upgrade {
+    font-style: italic;
+    background: linear-gradient(135deg, var(--indigo) 0%, #818cf8 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .hero-sub {
+    font-size: 1.1rem; color: var(--text-muted); line-height: 1.75;
+    margin-bottom: 36px; max-width: 480px;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; animation: fadeUp 0.6s 0.3s ease both; }
+  .btn-primary {
+    background: var(--indigo); color: white;
+    padding: 14px 28px; border-radius: 10px; font-weight: 700; font-size: 0.95rem;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+    box-shadow: 0 4px 16px rgba(79,70,229,0.3); transition: all 0.2s;
+  }
+  .btn-primary:hover { background: var(--indigo-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(79,70,229,0.35); }
+  .btn-ghost {
+    background: white; color: var(--text-muted);
+    padding: 14px 24px; border-radius: 10px; font-weight: 600; font-size: 0.95rem;
+    text-decoration: none; border: 1px solid var(--border);
+    display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; box-shadow: var(--shadow-sm);
+  }
+  .btn-ghost:hover { border-color: var(--indigo-200); color: var(--indigo); }
+  .hero-trust { display: flex; align-items: center; gap: 12px; margin-top: 28px; animation: fadeUp 0.6s 0.4s ease both; }
+  .trust-avatars { display: flex; }
+  .trust-avatar { width: 32px; height: 32px; border-radius: 50%; border: 2px solid white; background: var(--indigo-50); display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 800; color: var(--indigo); margin-left: -8px; box-shadow: var(--shadow-sm); }
+  .trust-avatar:first-child { margin-left: 0; }
+  .trust-text { font-size: 0.82rem; color: var(--text-muted); line-height: 1.4; }
+  .trust-text strong { color: var(--text); font-weight: 700; }
+
+  /* Hero right — LMS comparison visual */
+  .hero-visual { animation: fadeUp 0.7s 0.2s ease both; }
+  .lms-compare-card {
+    background: white; border: 1px solid var(--border); border-radius: 20px;
+    overflow: hidden; box-shadow: var(--shadow-xl);
+  }
+  .lms-compare-header {
+    display: grid; grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+  .lms-col-header {
+    padding: 14px 20px; font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .lms-col-header.old { background: #fef2f2; color: #991b1b; border-right: 1px solid var(--border); }
+  .lms-col-header.new { background: var(--indigo-50); color: var(--indigo); }
+  .lms-col-header .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .lms-col-header.old .dot { background: #ef4444; }
+  .lms-col-header.new .dot { background: var(--indigo); animation: pulseDot 2s ease infinite; }
+  @keyframes pulseDot { 0%,100%{opacity:1} 50%{opacity:0.5} }
+  .lms-rows { display: flex; flex-direction: column; }
+  .lms-row { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); }
+  .lms-row:last-child { border-bottom: none; }
+  .lms-cell {
+    padding: 14px 20px; font-size: 0.84rem; line-height: 1.5;
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .lms-cell.old { border-right: 1px solid var(--border); background: #fffbfb; color: var(--text-muted); }
+  .lms-cell.new { background: white; color: var(--text); font-weight: 500; }
+  .lms-cell .cell-icon { flex-shrink: 0; margin-top: 1px; font-size: 14px; }
+  .lms-cell.old .cell-icon { color: #ef4444; }
+  .lms-cell.new .cell-icon { color: var(--green); }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ── LOGOS ─────────────────────── */
+  .logos-sec { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 28px 6%; }
+  .logos-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
+  .logos-label { font-size: 0.75rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+  .logos-chips { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .logo-chip { background: white; border: 1px solid var(--border); border-radius: 8px; padding: 8px 18px; font-size: 0.82rem; font-weight: 700; color: var(--text-muted); letter-spacing: -0.01em; }
+
+  /* ── SECTION BASE ─────────────────── */
+  section { padding: 96px 6%; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .eyebrow { display: flex; align-items: center; gap: 7px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--indigo); margin-bottom: 14px; }
+  .section-title { font-family: 'Instrument Serif', serif; font-size: clamp(2rem, 3.8vw, 3rem); line-height: 1.12; letter-spacing: -0.02em; margin-bottom: 16px; color: var(--text); }
+  .section-title em { font-style: italic; color: var(--indigo); }
+  .section-sub { font-size: 1rem; color: var(--text-muted); max-width: 540px; line-height: 1.75; }
+  .divider { height: 1px; background: var(--border); }
+
+  /* ── PAIN → GAIN ─────────────────── */
+  .pain-sec { background: var(--bg); }
+  .pain-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 52px; }
+  .pain-card {
+    border-radius: 16px; padding: 28px;
+    position: relative; overflow: hidden;
+    border: 1px solid;
+  }
+  .pain-card.bad { background: #fffbfb; border-color: #fecaca; }
+  .pain-card.good { background: var(--indigo-50); border-color: var(--indigo-100); }
+  .pain-card-eyebrow { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px; display: flex; align-items: center; gap: 6px; }
+  .pain-card.bad .pain-card-eyebrow { color: #991b1b; }
+  .pain-card.good .pain-card-eyebrow { color: var(--indigo); }
+  .pain-items { display: flex; flex-direction: column; gap: 12px; }
+  .pain-item { display: flex; gap: 10px; align-items: flex-start; }
+  .pain-item .pi { flex-shrink: 0; margin-top: 2px; font-size: 15px; }
+  .pain-card.bad .pi { color: #ef4444; }
+  .pain-card.good .pi { color: var(--green); }
+  .pain-item span { font-size: 0.88rem; color: var(--text-muted); line-height: 1.55; }
+  .pain-card.good .pain-item span { color: var(--text); font-weight: 500; }
+  .arrow-divider {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; color: var(--indigo); flex-shrink: 0;
+    align-self: center;
+  }
+  @media(max-width:768px){ .arrow-divider { transform: rotate(90deg); } }
+  .pain-grid-3 { display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px; margin-top: 52px; align-items: start; }
+  @media(max-width:768px){ .pain-grid-3 { grid-template-columns: 1fr; } }
+
+  /* ── MIGRATION ─────────────────── */
+  .migration-sec { background: var(--bg3); }
+  .migration-steps { display: flex; flex-direction: column; gap: 0; margin-top: 52px; position: relative; }
+  .migration-steps::before {
+    content: '';
+    position: absolute; left: 24px; top: 24px; bottom: 24px; width: 2px;
+    background: linear-gradient(180deg, var(--indigo-200), var(--indigo-100));
+    z-index: 0;
+  }
+  .mig-step { display: flex; gap: 24px; position: relative; z-index: 1; padding-bottom: 32px; }
+  .mig-step:last-child { padding-bottom: 0; }
+  .mig-num {
+    width: 48px; height: 48px; border-radius: 50%; background: var(--indigo);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.82rem; font-weight: 800; color: white; flex-shrink: 0;
+    box-shadow: 0 0 0 4px var(--indigo-100);
+  }
+  .mig-body { padding-top: 10px; }
+  .mig-body h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; color: var(--text); letter-spacing: -0.01em; }
+  .mig-body p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.65; max-width: 480px; }
+  .mig-tag { display: inline-flex; align-items: center; gap: 5px; margin-top: 10px; background: var(--indigo-50); border: 1px solid var(--indigo-100); color: var(--indigo); font-size: 0.72rem; font-weight: 700; padding: 3px 10px; border-radius: 6px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .migration-right { position: sticky; top: 100px; align-self: start; }
+  .migration-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start; }
+  @media(max-width:860px){ .migration-inner { grid-template-columns: 1fr; } }
+
+  /* Migration LMS logos */
+  .from-lms-card {
+    background: white; border: 1px solid var(--border); border-radius: 16px; padding: 28px;
+    box-shadow: var(--shadow-md);
+  }
+  .from-lms-card h4 { font-size: 0.78rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px; }
+  .lms-pill-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+  .lms-pill {
+    display: flex; align-items: center; gap: 7px;
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 8px;
+    padding: 8px 14px; font-size: 0.82rem; font-weight: 600; color: var(--text-muted);
+    transition: all 0.2s;
+  }
+  .lms-pill:hover { border-color: var(--indigo-200); color: var(--indigo); }
+  .lms-pill-icon { width: 22px; height: 22px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 800; flex-shrink: 0; }
+  .migrate-arrow-card { background: var(--indigo); border-radius: 12px; padding: 16px; text-align: center; margin: 16px 0; }
+  .migrate-arrow-card p { color: rgba(255,255,255,0.8); font-size: 0.78rem; font-weight: 600; margin-top: 4px; }
+  .zoho-pill { background: var(--indigo-50); border: 2px solid var(--indigo-200); border-radius: 10px; padding: 14px 20px; display: flex; align-items: center; gap: 12px; }
+  .zoho-pill-icon { width: 36px; height: 36px; background: var(--indigo); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .zoho-pill-icon svg { width: 18px; height: 18px; fill: white; }
+  .zoho-pill-text h5 { font-size: 0.95rem; font-weight: 700; color: var(--indigo); margin-bottom: 2px; }
+  .zoho-pill-text p { font-size: 0.75rem; color: var(--indigo); opacity: 0.7; }
+
+  /* ── FEATURES ─────────────────── */
+  .features-sec { background: var(--bg); }
+  .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 52px; }
+  .feat-card {
+    background: white; border: 1px solid var(--border); border-radius: 16px;
+    padding: 28px; transition: all 0.25s; box-shadow: var(--shadow-sm);
+  }
+  .feat-card:hover { border-color: var(--indigo-200); box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+  .feat-icon { width: 44px; height: 44px; border-radius: 10px; background: var(--indigo-50); border: 1px solid var(--indigo-100); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; color: var(--indigo); }
+  .feat-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; color: var(--text); letter-spacing: -0.01em; }
+  .feat-card p { font-size: 0.86rem; color: var(--text-muted); line-height: 1.65; }
+  .feat-badge { display: inline-flex; align-items: center; gap: 4px; margin-top: 12px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 3px 9px; border-radius: 5px; }
+  .feat-badge.new { background: var(--green-50); color: var(--green); border: 1px solid var(--green-100); }
+  .feat-badge.ai { background: var(--indigo-50); color: var(--indigo); border: 1px solid var(--indigo-100); }
+
+  /* ── SAVINGS ─────────────────── */
+  .savings-sec { background: var(--indigo); position: relative; overflow: hidden; }
+  .savings-sec::before {
+    content: '';
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 500px 400px at 80% 50%, rgba(255,255,255,0.04) 0%, transparent 70%),
+      radial-gradient(ellipse 300px 300px at 10% 20%, rgba(255,255,255,0.03) 0%, transparent 60%);
+  }
+  .savings-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  @media(max-width:860px){ .savings-inner { grid-template-columns: 1fr; gap: 48px; } }
+  .savings-sec .section-title { color: white; }
+  .savings-sec .section-sub { color: rgba(255,255,255,0.7); }
+  .savings-sec .eyebrow { color: rgba(255,255,255,0.5); }
+  .savings-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .savings-stat { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 14px; padding: 22px; }
+  .savings-stat .s-num { font-family: 'Instrument Serif', serif; font-size: 2.4rem; color: white; line-height: 1; letter-spacing: -0.03em; }
+  .savings-stat .s-label { font-size: 0.78rem; color: rgba(255,255,255,0.6); margin-top: 5px; font-weight: 500; }
+  .btn-white { background: white; color: var(--indigo); padding: 14px 28px; border-radius: 10px; font-weight: 700; font-size: 0.95rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; box-shadow: 0 4px 16px rgba(0,0,0,0.12); margin-top: 28px; }
+  .btn-white:hover { background: var(--indigo-50); transform: translateY(-2px); }
+
+  /* ── TESTIMONIAL ─────────────────── */
+  .testimonial-sec { background: var(--bg2); }
+  .testimonial-header { text-align: center; margin-bottom: 48px; }
+  .testimonial-header .section-title { margin-bottom: 12px; }
+  .testimonial-header .eyebrow { justify-content: center; }
+  .testimonial-video-wrap {
+    max-width: 800px; margin: 0 auto;
+    border-radius: 20px; overflow: hidden;
+    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--border);
+  }
+  .video-placeholder {
+    width: 100%; aspect-ratio: 16/9;
+    background: linear-gradient(135deg, var(--bg3) 0%, var(--indigo-100) 100%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 16px;
+    position: relative;
+  }
+  .video-placeholder::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle, rgba(79,70,229,0.08) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+  }
+  .vp-btn { width: 68px; height: 68px; border-radius: 50%; background: var(--indigo); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 32px rgba(79,70,229,0.4); position: relative; z-index: 1; cursor: pointer; transition: transform 0.2s; }
+  .vp-btn:hover { transform: scale(1.07); }
+  .vp-btn svg { margin-left: 4px; }
+  .vp-label { position: relative; z-index: 1; text-align: center; }
+  .vp-label h4 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .vp-label p { font-size: 0.82rem; color: var(--text-muted); }
+  .video-meta {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 22px; background: white; border-top: 1px solid var(--border);
+  }
+  .vm-left { display: flex; align-items: center; gap: 12px; }
+  .vm-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--indigo-50); border: 2px solid var(--indigo-100); display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 800; color: var(--indigo); }
+  .vm-name { font-size: 0.86rem; font-weight: 700; color: var(--text); }
+  .vm-role { font-size: 0.73rem; color: var(--text-muted); margin-top: 1px; }
+  .vm-badge { background: var(--indigo-50); border: 1px solid var(--indigo-100); color: var(--indigo); font-size: 0.72rem; font-weight: 700; padding: 4px 11px; border-radius: 6px; letter-spacing: 0.04em; }
+  .quote-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 28px; max-width: 800px; margin-left: auto; margin-right: auto; }
+  .qc { background: white; border: 1px solid var(--border); border-radius: 14px; padding: 22px; box-shadow: var(--shadow-sm); position: relative; }
+  .qc::before { content: '"'; position: absolute; top: 10px; right: 16px; font-size: 3rem; line-height: 1; color: var(--indigo-100); font-family: Georgia,serif; }
+  .qc-text { font-size: 0.87rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 14px; }
+  .qc-author { display: flex; align-items: center; gap: 10px; }
+  .qc-av { width: 32px; height: 32px; border-radius: 50%; background: var(--indigo-50); border: 1px solid var(--indigo-100); display: flex; align-items: center; justify-content: center; font-size: 0.68rem; font-weight: 800; color: var(--indigo); flex-shrink: 0; }
+  .qc-name { font-size: 0.8rem; font-weight: 700; color: var(--text); }
+  .qc-role { font-size: 0.7rem; color: var(--text-dim); margin-top: 1px; }
+
+  /* ── CTA ─────────────────────── */
+  .cta-sec { background: var(--bg); border-top: 1px solid var(--border); text-align: center; }
+  .cta-sec .section-title { font-size: clamp(2rem, 4vw, 3.2rem); }
+  .cta-sec .section-sub { margin: 0 auto 36px; text-align: center; }
+  .cta-group { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
+  .cta-fine { font-size: 0.78rem; color: var(--text-dim); display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; }
+  .cta-fine span { display: flex; align-items: center; gap: 4px; }
+
+  /* ── FOOTER ─────────────────────── */
+  footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 28px 6%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
+  .foot-logo { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 0.9rem; color: var(--text-muted); text-decoration: none; }
+  .foot-logo span { color: var(--indigo); }
+  footer p { font-size: 0.76rem; color: var(--text-dim); }
+  .foot-links { display: flex; gap: 20px; }
+  .foot-link { font-size: 0.78rem; color: var(--text-dim); text-decoration: none; }
+  .foot-link:hover { color: var(--indigo); }
+
+  /* ── REVEAL ─────────────────────── */
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.55s ease, transform 0.55s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  @media(max-width:600px){ nav{padding:0 5%} section{padding:72px 5%} }
+
+  /* ── INLINE SVG ICONS ─────────────── */
+  .ico { display:inline-block; vertical-align:-0.125em; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="https://zoho.com/classes" class="nav-logo">
+    <div class="nav-logo-icon">
+      <svg viewBox="0 0 256 256"><path d="M251.76,88.94l-120-64a8,8,0,0,0-7.52,0l-120,64a8,8,0,0,0,0,14.12L32,117.87v48.42a15.91,15.91,0,0,0,4.06,10.65C49.16,191.53,78.51,208,128,208s78.84-16.47,91.94-31.06A15.91,15.91,0,0,0,224,166.29V117.87l16-8.53V176a8,8,0,0,0,16,0V96A8,8,0,0,0,251.76,88.94Z"/></svg>
+    </div>
+    <span class="nav-logo-text">Zoho <span>Classes</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="#why-switch" class="nav-link">Why Switch</a>
+    <a href="#migration" class="nav-link">Migration</a>
+    <a href="#features" class="nav-link">Features</a>
+    <a href="#pricing" class="nav-link">Pricing</a>
+  </div>
+  <div class="nav-actions">
+    <a href="https://www.zoho.com/classes/signup.html" class="btn-nav-ghost">Sign In</a>
+    <a href="https://www.zoho.com/classes/signup.html" class="btn-nav-primary">Start Free Trial</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-kicker"><span class="fire">🔥</span> Your LMS is holding you back</div>
+      <h1>Ditch your <span class="strike">legacy LMS</span>.<br>Switch to something <span class="upgrade">actually modern.</span></h1>
+      <p class="hero-sub">Canvas, Blackboard, Moodle — built for a different era. Zoho Classes is an AI-powered academic platform built for how people actually teach and learn today. Migration takes days, not months.</p>
+      <div class="hero-actions">
+        <a href="https://www.zoho.com/classes/signup.html" class="btn-primary">
+          <svg class="ico" width="16" height="16" viewBox="0 0 256 256" fill="currentColor"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
+          Start Free — No Credit Card
+        </a>
+        <a href="#migration" class="btn-ghost">
+          See Migration Guide
+          <svg class="ico" width="15" height="15" viewBox="0 0 256 256" fill="currentColor"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg>
+        </a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-avatars">
+          <div class="trust-avatar">JM</div>
+          <div class="trust-avatar">SR</div>
+          <div class="trust-avatar">KL</div>
+          <div class="trust-avatar">AP</div>
+          <div class="trust-avatar" style="background:var(--indigo);color:white;font-size:0.55rem">+2K</div>
+        </div>
+        <div class="trust-text"><strong>2,000+ institutions</strong> have already<br>made the switch this year</div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="lms-compare-card">
+        <div class="lms-compare-header">
+          <div class="lms-col-header old"><span class="dot"></span> Legacy LMS</div>
+          <div class="lms-col-header new"><span class="dot"></span> Zoho Classes</div>
+        </div>
+        <div class="lms-rows">
+          <div class="lms-row">
+            <div class="lms-cell old">
+              <svg class="ico cell-icon" width="14" height="14" viewBox="0 0 256 256" fill="currentColor"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>
+              <span>Manual course creation — hours per lesson</span>
+            </div>
+            <div class="lms-cell new">
+              <svg class="ico cell-icon" width="14" height="14" viewBox="0 0 256 256" fill="currentColor"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg>
+              <span>AI builds full courses in 30 seconds</span>
+            </div>
+          </div>
+          <div class="lms-row">
+            <div class="lms-cell old">
+              <svg class="ico cell-icon" width="14" height="14" viewBox="0 0 256 256" fill="currentColor"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>
+              <span>Clunky 2005-era interface students hate</span>
+            </div>
+            <div class="lms-cell new">
+              <svg class="ico cell-icon" width="14" height="14" viewBox="0 0 256 256" fill="currentColor"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg>
+              <span>Modern mobile-first UI students actually use</span>
+            </div>
+          </div>
+          <div class="lms-row">
+            <div class="lms-cell old">
+              <svg class="ico cell-icon" width="14" height="14" viewBox="0 0 256 256" fill="currentColor"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>
+              <span>Expensive per-seat licensing that never ends</span>
+            </div>
+            <div class="lms-cell new">
+              <svg class="ico cell-icon" width="14" height="14" viewBox="0 0 256 256" fill="currentColor"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg>
+              <span>Simple flat pricing — fraction of the cost</span>
+            </div>
+          </div>
+          <div class="lms-row">
+            <div class="lms-cell old">
+              <svg class="ico cell-icon" width="14" height="14" viewBox="0 0 256 256" fill="currentColor"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>
+              <span>Zero AI — same tools as a decade ago</span>
+            </div>
+            <div class="lms-cell new">
+              <svg class="ico cell-icon" width="14" height="14" viewBox="0 0 256 256" fill="currentColor"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg>
+              <span>10+ AI assistants built for educators</span>
+            </div>
+          </div>
+          <div class="lms-row">
+            <div class="lms-cell old">
+              <svg class="ico cell-icon" width="14" height="14" viewBox="0 0 256 256" fill="currentColor"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>
+              <span>Migration nightmares — months of IT work</span>
+            </div>
+            <div class="lms-cell new">
+              <svg class="ico cell-icon" width="14" height="14" viewBox="0 0 256 256" fill="currentColor"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg>
+              <span>White-glove migration team — live in days</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT IMAGE PLACEHOLDER — Hero -->
+<div style="max-width:960px;margin:0 auto;padding:40px 6%">
+  <div style="padding:40px;background:#eef2ff;border:2px dashed #c7d2fe;border-radius:16px;text-align:center">
+    <p style="font-size:0.88rem;font-weight:700;color:#4f46e5;margin-bottom:4px">Product Image Needed — IMAGE #2 (US)</p>
+    <p style="font-size:0.8rem;color:#6b7280">Before/After: Legacy LMS screenshot (Blackboard/Canvas) side by side with Zoho Classes modern UI</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- LOGOS -->
+<div class="logos-sec">
+  <div class="logos-inner">
+    <span class="logos-label">Migrated from</span>
+    <div class="logos-chips">
+      <div class="logo-chip">Canvas LMS</div>
+      <div class="logo-chip">Blackboard</div>
+      <div class="logo-chip">Moodle</div>
+      <div class="logo-chip">D2L Brightspace</div>
+      <div class="logo-chip">Instructure</div>
+      <div class="logo-chip">Schoology</div>
+      <div class="logo-chip">Google Classroom</div>
+    </div>
+  </div>
+</div>
+
+<!-- WHY SWITCH -->
+<section class="pain-sec" id="why-switch">
+  <div class="section-inner">
+    <div class="eyebrow">
+      <svg class="ico" width="14" height="14" viewBox="0 0 256 256" fill="currentColor"><path d="M236.8,188.09,149.35,36.22a24.76,24.76,0,0,0-42.7,0L19.2,188.09a23.51,23.51,0,0,0,0,23.72A24.35,24.35,0,0,0,40.55,224h174.9a24.35,24.35,0,0,0,21.33-12.19A23.51,23.51,0,0,0,236.8,188.09ZM120,104a8,8,0,0,1,16,0v40a8,8,0,0,1-16,0Zm8,88a12,12,0,1,1,12-12A12,12,0,0,1,128,192Z"/></svg>
+      The real cost of staying put
+    </div>
+    <h2 class="section-title">Your LMS isn't just outdated.<br>It's <em>costing you.</em></h2>
+    <div class="pain-grid-3 reveal">
+      <div class="pain-card bad">
+        <div class="pain-card-eyebrow">
+          <svg class="ico" width="13" height="13" viewBox="0 0 256 256" fill="currentColor"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>
+          What you're dealing with now
+        </div>
+        <div class="pain-items">
+          <div class="pain-item">
+            <svg class="ico pi" width="15" height="15" viewBox="0 0 256 256" fill="currentColor"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>
+            <span>Faculty spend 40+ hours a semester building and maintaining course content manually</span>
+          </div>
+          <div class="pain-item">
+            <svg class="ico pi" width="15" height="15" viewBox="0 0 256 256" fill="currentColor"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>
+            <span>Students disengage from systems that feel like filing software from 2006</span>
+          </div>
+          <div class="pain-item">
+            <svg class="ico pi" width="15" height="15" viewBox="0 0 256 256" fill="currentColor"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>
+            <span>License fees balloon every renewal cycle with little value added</span>
+          </div>
+          <div class="pain-item">
+            <svg class="ico pi" width="15" height="15" viewBox="0 0 256 256" fill="currentColor"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>
+            <span>IT support tickets pile up for basic tasks that should take seconds</span>
+          </div>
+          <div class="pain-item">
+            <svg class="ico pi" width="15" height="15" viewBox="0 0 256 256" fill="currentColor"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>
+            <span>No analytics that actually tell you if learning is happening</span>
+          </div>
+        </div>
+      </div>
+      <div class="arrow-divider">
+        <svg width="36" height="36" viewBox="0 0 256 256" fill="currentColor"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg>
+      </div>
+      <div class="pain-card good">
+        <div class="pain-card-eyebrow">
+          <svg class="ico" width="13" height="13" viewBox="0 0 256 256" fill="currentColor"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg>
+          With Zoho Classes
+        </div>
+        <div class="pain-items">
+          <div class="pain-item">
+            <svg class="ico pi" width="15" height="15" viewBox="0 0 256 256" fill="currentColor"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg>
+            <span>AI builds a complete course — syllabus to quizzes — in under a minute</span>
+          </div>
+          <div class="pain-item">
+            <svg class="ico pi" width="15" height="15" viewBox="0 0 256 256" fill="currentColor"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg>
+            <span>Clean, modern interface students recognize and actually enjoy using</span>
+          </div>
+          <div class="pain-item">
+            <svg class="ico pi" width="15" height="15" viewBox="0 0 256 256" fill="currentColor"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg>
+            <span>Transparent pricing — typically 60–70% less than Canvas or Blackboard</span>
+          </div>
+          <div class="pain-item">
+            <svg class="ico pi" width="15" height="15" viewBox="0 0 256 256" fill="currentColor"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg>
+            <span>Zero-IT setup — faculty are live in hours, not weeks</span>
+          </div>
+          <div class="pain-item">
+            <svg class="ico pi" width="15" height="15" viewBox="0 0 256 256" fill="currentColor"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg>
+            <span>Live engagement analytics — see who's learning and who's falling behind</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MIGRATION -->
+<section class="migration-sec" id="migration">
+  <div class="section-inner">
+    <div class="migration-inner">
+      <div>
+        <div class="eyebrow">
+          <svg class="ico" width="14" height="14" viewBox="0 0 256 256" fill="currentColor"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
+          Migration in days, not months
+        </div>
+        <h2 class="section-title">Switching is <em>easier<br>than you think</em></h2>
+        <p class="section-sub" style="margin-bottom:40px">We've built a migration process that makes IT teams breathe easy and faculty not even notice the transition — except that everything suddenly works better.</p>
+        <div class="migration-steps reveal">
+          <div class="mig-step">
+            <div class="mig-num">1</div>
+            <div class="mig-body">
+              <h3>Free migration audit</h3>
+              <p>Our team reviews your current LMS setup, content volume, and user structure. We give you an exact timeline and migration plan — no surprises.</p>
+              <span class="mig-tag">Free of charge</span>
+            </div>
+          </div>
+          <div class="mig-step">
+            <div class="mig-num">2</div>
+            <div class="mig-body">
+              <h3>Automated content import</h3>
+              <p>We import your existing courses, syllabi, assignments, and user data using our LMS migration tool. SCORM packages, Common Cartridge files, and CSV exports all supported.</p>
+              <span class="mig-tag">SCORM & Common Cartridge</span>
+            </div>
+          </div>
+          <div class="mig-step">
+            <div class="mig-num">3</div>
+            <div class="mig-body">
+              <h3>Parallel run period</h3>
+              <p>Run both systems side-by-side during a 2-week overlap window. Faculty and students get trained on the new platform while the old one remains accessible.</p>
+              <span class="mig-tag">Zero disruption</span>
+            </div>
+          </div>
+          <div class="mig-step">
+            <div class="mig-num">4</div>
+            <div class="mig-body">
+              <h3>Go live — with support</h3>
+              <p>Your dedicated Zoho Classes implementation manager stays with you for 90 days post-launch. On-call support, training sessions, and quarterly reviews included.</p>
+              <span class="mig-tag">90-day success program</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="migration-right reveal">
+        <div class="from-lms-card">
+          <h4>Migrating from</h4>
+          <div class="lms-pill-grid">
+            <div class="lms-pill"><div class="lms-pill-icon" style="background:#E66000;color:white">C</div> Canvas</div>
+            <div class="lms-pill"><div class="lms-pill-icon" style="background:#C00;color:white">B</div> Blackboard</div>
+            <div class="lms-pill"><div class="lms-pill-icon" style="background:#F47920;color:white">M</div> Moodle</div>
+            <div class="lms-pill"><div class="lms-pill-icon" style="background:#009CDE;color:white">D</div> D2L</div>
+            <div class="lms-pill"><div class="lms-pill-icon" style="background:#4285F4;color:white">G</div> Google Classroom</div>
+            <div class="lms-pill"><div class="lms-pill-icon" style="background:#3E7D00;color:white">S</div> Schoology</div>
+          </div>
+          <div class="migrate-arrow-card">
+            <svg width="22" height="22" viewBox="0 0 256 256" fill="white" style="display:block;margin:0 auto"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg>
+            <p>White-glove migration team</p>
+          </div>
+          <div class="zoho-pill">
+            <div class="zoho-pill-icon">
+              <svg viewBox="0 0 256 256" fill="white"><path d="M251.76,88.94l-120-64a8,8,0,0,0-7.52,0l-120,64a8,8,0,0,0,0,14.12L32,117.87v48.42a15.91,15.91,0,0,0,4.06,10.65C49.16,191.53,78.51,208,128,208s78.84-16.47,91.94-31.06A15.91,15.91,0,0,0,224,166.29V117.87l16-8.53V176a8,8,0,0,0,16,0V96A8,8,0,0,0,251.76,88.94Z"/></svg>
+            </div>
+            <div class="zoho-pill-text">
+              <h5>Zoho Classes</h5>
+              <p>Modern AI-powered LMS — live in days</p>
+            </div>
+          </div>
+          <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border)">
+            <p style="font-size:0.78rem;color:var(--text-dim);margin-bottom:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase">Typical migration timeline</p>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;justify-content:space-between;font-size:0.82rem">
+                <span style="color:var(--text-muted)">Audit & planning</span>
+                <span style="font-weight:700;color:var(--text)">1–2 days</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:0.82rem">
+                <span style="color:var(--text-muted)">Content import</span>
+                <span style="font-weight:700;color:var(--text)">2–5 days</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:0.82rem">
+                <span style="color:var(--text-muted)">Parallel run</span>
+                <span style="font-weight:700;color:var(--text)">2 weeks</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:0.82rem;padding-top:6px;border-top:1px solid var(--border);margin-top:2px">
+                <span style="color:var(--text);font-weight:700">Total time to live</span>
+                <span style="font-weight:800;color:var(--green)">~3 weeks</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- PRODUCT IMAGE PLACEHOLDER — Migration -->
+  <div style="margin-top:40px;padding:40px;background:#eef2ff;border:2px dashed #c7d2fe;border-radius:16px;text-align:center">
+    <p style="font-size:0.88rem;font-weight:700;color:#4f46e5;margin-bottom:4px">Product Image Needed — IMAGE #3 (US)</p>
+    <p style="font-size:0.8rem;color:#6b7280">Migration progress screen or content import wizard in Zoho Classes admin panel</p>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-sec" id="features">
+  <div class="section-inner">
+    <div class="eyebrow">
+      <svg class="ico" width="14" height="14" viewBox="0 0 256 256" fill="currentColor"><path d="M197.58,129.06,146,110l-19-51.62a15.92,15.92,0,0,0-29.88,0L78,110,26.42,129.06a15.92,15.92,0,0,0,0,29.88L78,178l19,51.62a15.92,15.92,0,0,0,29.88,0L146,178l51.62-19a15.92,15.92,0,0,0,0-29.88Z"/></svg>
+      What you get instead
+    </div>
+    <h2 class="section-title">Everything a modern LMS<br>should have been doing <em>all along</em></h2>
+    <div class="features-grid reveal">
+      <div class="feat-card">
+        <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 256 256" fill="currentColor"><path d="M213.85,125.46l-112,120a8,8,0,0,1-13.69-7l14.66-73.33L42.15,130.54a8,8,0,0,1,1-13l112-120a8,8,0,0,1,13.69,7L154.18,117.87l60.67,34.59a8,8,0,0,1-1,13Z"/></svg></div>
+        <h3>AI Course Builder</h3>
+        <p>Paste a syllabus. AI generates a full structured course — video outlines, reading assignments, MCQs, practice tests — in under 60 seconds.</p>
+        <span class="feat-badge ai">AI Powered</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 256 256" fill="currentColor"><path d="M200,48H136V16a8,8,0,0,0-16,0V48H56A32,32,0,0,0,24,80V192a32,32,0,0,0,32,32H200a32,32,0,0,0,32-32V80A32,32,0,0,0,200,48Zm16,144a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V80A16,16,0,0,1,56,64H200a16,16,0,0,1,16,16Zm-52-56H92a28,28,0,0,0,0,56h72a28,28,0,0,0,0-56Zm-28,16v24H120V152Zm-44,12a12,12,0,0,1,12-12h12v24H104A12,12,0,0,1,92,164Zm72,12H152V152h12a12,12,0,0,1,0,24ZM100,108a12,12,0,1,1,12,12A12,12,0,0,1,100,108Zm48,0a12,12,0,1,1,12,12A12,12,0,0,1,148,108Z"/></svg></div>
+        <h3>AI Tutor for Every Student</h3>
+        <p>Every student gets a personal AI assistant that answers questions, explains concepts, and adapts to their learning pace — available 24/7.</p>
+        <span class="feat-badge ai">AI Powered</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 256 256" fill="currentColor"><path d="M232,208a8,8,0,0,1-8,8H32a8,8,0,0,1-8-8V48a8,8,0,0,1,16,0V156.69l50.34-50.35a8,8,0,0,1,11.32,0L128,132.69,180.69,80H160a8,8,0,0,1,0-16h40a8,8,0,0,1,8,8v40a8,8,0,0,1-16,0V91.31l-58.34,58.35a8,8,0,0,1-11.32,0L96,123.31l-56,56V200H224A8,8,0,0,1,232,208Z"/></svg></div>
+        <h3>Live Engagement Analytics</h3>
+        <p>See exactly where students disengage, which content lands, and who needs intervention — before they drop out or fail.</p>
+        <span class="feat-badge new">New</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 256 256" fill="currentColor"><path d="M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48Zm-96,85.15L52.57,64H203.43ZM98.71,128,40,181.81V74.19Zm11.84,10.85,12,11.05a8,8,0,0,0,10.82,0l12-11.05,58,53.15H52.57ZM157.29,128,216,74.18V181.82Z"/></svg></div>
+        <h3>Instant Announcements</h3>
+        <p>Push notifications to every student's phone in seconds. Class cancellations, deadline changes, exam reminders — no email chains needed.</p>
+        <span class="feat-badge new">New</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 256 256" fill="currentColor"><path d="M224,200h-8V96a16,16,0,0,0-16-16H164V48a16,16,0,0,0-16-16H64A16,16,0,0,0,48,48V200H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16ZM208,96V200H164V96ZM64,48H148V200H120V168a8,8,0,0,0-8-8H84a8,8,0,0,0-8,8v40H64Zm40,160H92V176h12Z"/></svg></div>
+        <h3>Multi-Campus Distribution</h3>
+        <p>Run one Zoho Classes instance across 10, 100, or 10,000 classrooms. Central admin pushes courses; local faculty customize for their sections.</p>
+        <span class="feat-badge new">Enterprise</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 256 256" fill="currentColor"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-40,40a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L128,148.69l34.34-34.35A8,8,0,0,1,173.66,98.34ZM232,88v48c0,63.41-54.1,98.21-98.32,116.81a16,16,0,0,1-11.36,0C78.1,234.21,24,199.41,24,136V88a16,16,0,0,1,14.77-15.94l88-8a16.1,16.1,0,0,1,2.46,0l88,8A16,16,0,0,1,232,88Zm-16,0-88-8-88,8v48c0,52.86,43.78,83.7,88,101.5C172.22,219.7,216,188.86,216,136Z"/></svg></div>
+        <h3>LTI & SSO Ready</h3>
+        <p>Integrates with your existing identity provider — Okta, Azure AD, Google Workspace. LTI 1.3 support for third-party tools your faculty already use.</p>
+        <span class="feat-badge new">IT Friendly</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 256 256" fill="currentColor"><path d="M224,48H32a8,8,0,0,0-8,8V152a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48Zm-8,104H40V64H216Zm-16,40a8,8,0,0,1-8,8H64a8,8,0,0,1,0-16H192A8,8,0,0,1,200,192Z"/></svg></div>
+        <h3>100,000+ Templates</h3>
+        <p>Pre-built course templates across every discipline — from intro programming to anatomy labs. Faculty pick, customize, and launch in minutes.</p>
+        <span class="feat-badge new">Instant Start</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 256 256" fill="currentColor"><path d="M248,128a56.06,56.06,0,0,1-56,56H144v16a8,8,0,0,1-16,0V184H112a56.06,56.06,0,0,1-56-56,8,8,0,0,1,16,0,40,40,0,0,0,40,40h80a40,40,0,0,0,0-80H152a24,24,0,0,1,0-48h8V24a8,8,0,0,1,16,0V40h16A56.06,56.06,0,0,1,248,128Z"/></svg></div>
+        <h3>Adaptive Assessments</h3>
+        <p>Practice tests that adjust in real time based on student performance. Identify knowledge gaps before the high-stakes exam, not after.</p>
+        <span class="feat-badge ai">AI Powered</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="height:1px;background:var(--border);position:relative;z-index:1"></div>
+
+<!-- MICROLEARNING IN-CLASS ACTIVITIES TEMPLATES -->
+<section style="background:var(--bg2,#fafaf9);padding:96px 6%;position:relative;z-index:1" id="more-features">
+  <div class="section-inner" style="max-width:1100px;margin:0 auto">
+    <div class="eyebrow" style="display:flex;align-items:center;gap:7px;font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--indigo,#4f46e5);margin-bottom:14px">
+      <svg style="display:inline-block;vertical-align:-0.125em" width="14" height="14" viewBox="0 0 256 256" fill="currentColor"><path d="M213.85,125.46l-112,120a8,8,0,0,1-13.69-7l14.66-73.33L42.15,130.54a8,8,0,0,1,1-13l112-120a8,8,0,0,1,13.69,7L154.18,117.87l60.67,34.59a8,8,0,0,1-1,13Z"/></svg>
+      More platform capabilities
+    </div>
+    <h2 style="font-size:clamp(1.8rem,3.5vw,2.7rem);font-weight:800;line-height:1.15;letter-spacing:-0.025em;margin-bottom:16px;color:var(--text,#111827)">Microlearning, In-Class Activities &amp; Templates</h2>
+    <p style="font-size:1rem;color:var(--text-muted,#6b7280);max-width:560px;line-height:1.75;margin-bottom:52px">Beyond courses — short bursts of learning, interactive classroom activities, and a library of ready-made templates to get any institution live in minutes.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px">
+
+      <!-- Microlearning -->
+      <div style="background:#fff;border:1px solid var(--border-light,#e8e7fb);border-radius:16px;padding:32px 28px;box-shadow:0 1px 3px rgba(79,70,229,0.06);transition:all 0.25s;position:relative;overflow:hidden">
+        <div style="font-size:0.7rem;font-weight:700;color:var(--text-dim,#9896b8);letter-spacing:0.12em;margin-bottom:18px">01</div>
+        <div style="width:44px;height:44px;border-radius:10px;background:var(--indigo-50,#eef2ff);border:1px solid var(--indigo-100,#e0e7ff);display:flex;align-items:center;justify-content:center;margin-bottom:16px;color:var(--indigo,#4f46e5)">
+          <svg width="22" height="22" viewBox="0 0 256 256" fill="currentColor"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm48-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h32A8,8,0,0,1,176,128Z"/></svg>
+        </div>
+        <h3 style="font-size:1.02rem;font-weight:700;margin-bottom:9px;color:var(--text,#111827)">Microlearning</h3>
+        <p style="font-size:0.87rem;color:var(--text-muted,#6b7280);line-height:1.65;margin-bottom:14px">Break complex subjects into short, focused learning bites — 3 to 5 minute lessons, quick-check quizzes, and bite-sized reading cards. Ideal for mobile learners and revision sessions before exams.</p>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px">
+          <span style="font-size:0.78rem;color:var(--text-dim,#9896b8);display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" style="color:#059669;flex-shrink:0"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg> 3–5 min focused lessons</span>
+          <span style="font-size:0.78rem;color:var(--text-dim,#9896b8);display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" style="color:#059669;flex-shrink:0"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg> Quick-check quizzes and flashcards</span>
+          <span style="font-size:0.78rem;color:var(--text-dim,#9896b8);display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" style="color:#059669;flex-shrink:0"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg> Mobile-first, offline-ready</span>
+        </div>
+        <span style="display:inline-flex;align-items:center;gap:5px;font-size:0.71rem;font-weight:700;letter-spacing:0.05em;padding:4px 10px;border-radius:6px;text-transform:uppercase;background:var(--indigo-50,#eef2ff);color:var(--indigo,#4f46e5);border:1px solid var(--indigo-100,#e0e7ff)">Bite-sized learning</span>
+      </div>
+
+      <!-- In-Class Activities -->
+      <div style="background:#fff;border:1px solid var(--border-light,#e8e7fb);border-radius:16px;padding:32px 28px;box-shadow:0 1px 3px rgba(79,70,229,0.06);transition:all 0.25s;position:relative;overflow:hidden">
+        <div style="font-size:0.7rem;font-weight:700;color:var(--text-dim,#9896b8);letter-spacing:0.12em;margin-bottom:18px">02</div>
+        <div style="width:44px;height:44px;border-radius:10px;background:var(--indigo-50,#eef2ff);border:1px solid var(--indigo-100,#e0e7ff);display:flex;align-items:center;justify-content:center;margin-bottom:16px;color:var(--indigo,#4f46e5)">
+          <svg width="22" height="22" viewBox="0 0 256 256" fill="currentColor"><path d="M117.25,157.92a60,60,0,1,0-66.5,0A95.83,95.83,0,0,0,3.53,195.63a8,8,0,1,0,13.4,8.74,80,80,0,0,1,134.14,0,8,8,0,0,0,13.4-8.74A95.83,95.83,0,0,0,117.25,157.92ZM40,108a44,44,0,1,1,44,44A44.05,44.05,0,0,1,40,108Zm210.14,98.7a8,8,0,0,1-11.07-2.33A79.83,79.83,0,0,0,172,168a8,8,0,0,1,0-16,44,44,0,1,0-16.34-84.87,8,8,0,1,1-5.94-14.85,60,60,0,0,1,55.53,105.64,95.83,95.83,0,0,1,47.22,37.71A8,8,0,0,1,250.14,206.7Z"/></svg>
+        </div>
+        <h3 style="font-size:1.02rem;font-weight:700;margin-bottom:9px;color:var(--text,#111827)">In-Class Activities</h3>
+        <p style="font-size:0.87rem;color:var(--text-muted,#6b7280);line-height:1.65;margin-bottom:14px">Transform any lesson into an interactive experience. Add live polls, group challenges, debates, and collaborative activities directly into your course so students participate actively, not passively.</p>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px">
+          <span style="font-size:0.78rem;color:var(--text-dim,#9896b8);display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" style="color:#059669;flex-shrink:0"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg> Live polls and group challenges</span>
+          <span style="font-size:0.78rem;color:var(--text-dim,#9896b8);display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" style="color:#059669;flex-shrink:0"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg> Debate prompts and role-play scenarios</span>
+          <span style="font-size:0.78rem;color:var(--text-dim,#9896b8);display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" style="color:#059669;flex-shrink:0"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg> Collaborative whiteboard activities</span>
+        </div>
+        <span style="display:inline-flex;align-items:center;gap:5px;font-size:0.71rem;font-weight:700;letter-spacing:0.05em;padding:4px 10px;border-radius:6px;text-transform:uppercase;background:var(--indigo-50,#eef2ff);color:var(--indigo,#4f46e5);border:1px solid var(--indigo-100,#e0e7ff)">Active learning</span>
+      </div>
+
+      <!-- Templates -->
+      <div style="background:#fff;border:1px solid var(--border-light,#e8e7fb);border-radius:16px;padding:32px 28px;box-shadow:0 1px 3px rgba(79,70,229,0.06);transition:all 0.25s;position:relative;overflow:hidden">
+        <div style="font-size:0.7rem;font-weight:700;color:var(--text-dim,#9896b8);letter-spacing:0.12em;margin-bottom:18px">03</div>
+        <div style="width:44px;height:44px;border-radius:10px;background:var(--indigo-50,#eef2ff);border:1px solid var(--indigo-100,#e0e7ff);display:flex;align-items:center;justify-content:center;margin-bottom:16px;color:var(--indigo,#4f46e5)">
+          <svg width="22" height="22" viewBox="0 0 256 256" fill="currentColor"><path d="M224,48H32a8,8,0,0,0-8,8V152a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48Zm-8,104H40V64H216Zm-16,40a8,8,0,0,1-8,8H64a8,8,0,0,1,0-16H192A8,8,0,0,1,200,192Z"/></svg>
+        </div>
+        <h3 style="font-size:1.02rem;font-weight:700;margin-bottom:9px;color:var(--text,#111827)">100,000+ Templates</h3>
+        <p style="font-size:0.87rem;color:var(--text-muted,#6b7280);line-height:1.65;margin-bottom:14px">Pick from a library of over 100,000 prebuilt course templates across every discipline. Customise and launch in minutes, not days.</p>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px">
+          <span style="font-size:0.78rem;color:var(--text-dim,#9896b8);display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" style="color:#059669;flex-shrink:0"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg> Fully editable — add your own branding</span>
+          <span style="font-size:0.78rem;color:var(--text-dim,#9896b8);display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" style="color:#059669;flex-shrink:0"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg> New templates added every week</span>
+          <span style="font-size:0.78rem;color:var(--text-dim,#9896b8);display:flex;align-items:center;gap:7px"><svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" style="color:#059669;flex-shrink:0"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg> Ready to use — no setup required</span>
+        </div>
+        <span style="display:inline-flex;align-items:center;gap:5px;font-size:0.71rem;font-weight:700;letter-spacing:0.05em;padding:4px 10px;border-radius:6px;text-transform:uppercase;background:var(--indigo-50,#eef2ff);color:var(--indigo,#4f46e5);border:1px solid var(--indigo-100,#e0e7ff)">Start instantly</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- APP REBRANDING -->
+<section style="background:var(--bg2);padding:96px 6%;position:relative;z-index:1" id="rebranding">
+  <div class="section-inner">
+    <div class="eyebrow">
+      <svg class="ico" width="14" height="14" viewBox="0 0 256 256" fill="currentColor"><path d="M197.58,129.06,146,110l-19-51.62a15.92,15.92,0,0,0-29.88,0L78,110,26.42,129.06a15.92,15.92,0,0,0,0,29.88L78,178l19,51.62a15.92,15.92,0,0,0,29.88,0L146,178l51.62-19a15.92,15.92,0,0,0,0-29.88Z"/></svg>
+      App Rebranding
+    </div>
+    <h2 class="section-title">Your institution's brand.<br><em>Inside every student's app.</em></h2>
+    <p class="section-sub">When you move to Zoho Classes, the platform isn't just white-labelled — it's fully rebrandable. Every student-facing surface carries your institution's identity, not ours.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-top:52px">
+
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg width="22" height="22" viewBox="0 0 256 256" fill="currentColor"><path d="M200,168a32.06,32.06,0,0,0-30.86,24H72a8,8,0,0,1-8-8V72H184a8,8,0,0,1,8,8v31.14A32,32,0,1,0,200,168Z"/></svg>
+        </div>
+        <h3>Custom App Name &amp; Icon</h3>
+        <p>Publish your institution's LMS under your own name and icon on iOS and Android app stores. Students download your branded app — powered by Zoho Classes behind the scenes.</p>
+        <span class="feat-badge new">White-label</span>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg width="22" height="22" viewBox="0 0 256 256" fill="currentColor"><path d="M224,48H32a8,8,0,0,0-8,8V152a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48Zm-8,104H40V64H216Z"/></svg>
+        </div>
+        <h3>Custom Domain &amp; Subdomain</h3>
+        <p>Run Zoho Classes on your own URL — learn.youruniversity.edu. Students never see a Zoho URL. All SSL certificates, redirects, and DNS configuration handled by our team.</p>
+        <span class="feat-badge new">Your domain</span>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg width="22" height="22" viewBox="0 0 256 256" fill="currentColor"><path d="M100,116.43a8,8,0,0,0,8,0l40-23.09A8,8,0,0,0,152,86.11V40a8,8,0,0,0-8-8H112a8,8,0,0,0-8,8V86.11A8,8,0,0,0,100,116.43Z"/></svg>
+        </div>
+        <h3>Branded Colours &amp; Logo</h3>
+        <p>Apply your institutional colour palette, logo, and typography across every screen — dashboards, course cards, announcements, emails, and push notifications all carry your brand.</p>
+        <span class="feat-badge new">Full theming</span>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg width="22" height="22" viewBox="0 0 256 256" fill="currentColor"><path d="M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48Zm-96,85.15L52.57,64H203.43ZM98.71,128,40,181.81V74.19Zm11.84,10.85,12,11.05a8,8,0,0,0,10.82,0l12-11.05,58,53.15H52.57ZM157.29,128,216,74.18V181.82Z"/></svg>
+        </div>
+        <h3>Branded Email &amp; Notifications</h3>
+        <p>Every email, SMS, and push notification sent through the platform uses your institution's name and email domain. No "from Zoho" anywhere in the student experience.</p>
+        <span class="feat-badge new">Your identity</span>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg width="22" height="22" viewBox="0 0 256 256" fill="currentColor"><path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34Z"/></svg>
+        </div>
+        <h3>Branded Certificates</h3>
+        <p>Course completion certificates carry your institution's seal, signature fields, and branding. Auto-generated, digitally verifiable, and downloadable by students the moment they complete a course.</p>
+        <span class="feat-badge new">Auto-issued</span>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg width="22" height="22" viewBox="0 0 256 256" fill="currentColor"><path d="M117.25,157.92a60,60,0,1,0-66.5,0A95.83,95.83,0,0,0,3.53,195.63a8,8,0,1,0,13.4,8.74,80,80,0,0,1,134.14,0,8,8,0,0,0,13.4-8.74A95.83,95.83,0,0,0,117.25,157.92Z"/></svg>
+        </div>
+        <h3>Branded Student Portal</h3>
+        <p>The student-facing web portal carries your institution's header, footer, and navigation. Feels like a native part of your digital campus — not a third-party tool bolted on.</p>
+        <span class="feat-badge new">Seamless UX</span>
+      </div>
+
+    </div>
+
+    <!-- PRODUCT IMAGE PLACEHOLDER — Rebranding / App icon / Custom portal -->
+    <div style="margin-top:48px;padding:40px;background:var(--indigo-50);border:2px dashed var(--indigo-200);border-radius:16px;text-align:center">
+      <svg style="display:block;margin:0 auto 12px;color:var(--indigo)" width="32" height="32" viewBox="0 0 256 256" fill="currentColor"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,160H40V56H216V200Z"/></svg>
+      <p style="font-size:0.88rem;font-weight:700;color:var(--indigo);margin-bottom:4px">Product Image Needed — IMAGE #1 (US)</p>
+      <p style="font-size:0.8rem;color:#6b7280">Side-by-side showing a default Zoho Classes app vs a rebranded institutional app (custom icon, name, colours)</p>
+    </div>
+  </div>
+</section>
+
+<!-- SAVINGS -->
+<section class="savings-sec" id="pricing">
+  <div class="section-inner">
+    <div class="savings-inner reveal">
+      <div>
+        <div class="eyebrow">Cost comparison</div>
+        <h2 class="section-title">You're probably<br>overpaying by a lot.</h2>
+        <p class="section-sub">Most institutions switching to Zoho Classes see 60–70% reduction in LMS spend — without losing a single feature they actually use.</p>
+        <a href="https://www.zoho.com/classes/signup.html" class="btn-white">
+          <svg class="ico" width="16" height="16" viewBox="0 0 256 256" fill="currentColor"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg>
+          Get a Custom Quote
+        </a>
+      </div>
+      <div class="savings-stats">
+        <div class="savings-stat">
+          <div class="s-num">60%</div>
+          <div class="s-label">Average cost reduction vs Canvas & Blackboard</div>
+        </div>
+        <div class="savings-stat">
+          <div class="s-num">3 wks</div>
+          <div class="s-label">Average time from contract to fully live</div>
+        </div>
+        <div class="savings-stat">
+          <div class="s-num">90%</div>
+          <div class="s-label">Less faculty time spent on course creation</div>
+        </div>
+        <div class="savings-stat">
+          <div class="s-num">2,000+</div>
+          <div class="s-label">Institutions that have already made the switch</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonial-sec">
+  <div class="section-inner">
+    <div class="testimonial-header reveal">
+      <div class="eyebrow">Testimonials</div>
+      <h2 class="section-title">From institutions that made the switch</h2>
+    </div>
+    <div class="testimonial-video-wrap reveal">
+      <div class="video-placeholder">
+        <div class="vp-btn">
+          <svg width="26" height="26" viewBox="0 0 256 256" fill="white"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
+        </div>
+        <div class="vp-label">
+          <h4>Customer Testimonial Video</h4>
+          <p>Add your embed here — <code style="background:var(--indigo-50);color:var(--indigo);padding:1px 6px;border-radius:4px;font-size:0.78rem">&lt;iframe&gt;</code> or <code style="background:var(--indigo-50);color:var(--indigo);padding:1px 6px;border-radius:4px;font-size:0.78rem">&lt;video&gt;</code></p>
+        </div>
+      </div>
+      <div class="video-meta">
+        <div class="vm-left">
+          <div class="vm-avatar">UT</div>
+          <div>
+            <div class="vm-name">University — US</div>
+            <div class="vm-role">Migrated from Canvas · AI-powered teaching</div>
+          </div>
+        </div>
+        <div class="vm-badge">Migrated from Canvas</div>
+      </div>
+    </div>
+    <div class="quote-cards reveal">
+      <div class="qc">
+        <p class="qc-text">We migrated 800 courses from Blackboard in under three weeks. The AI course builder alone saved our faculty hundreds of hours in the first semester.</p>
+        <div class="qc-author">
+          <div class="qc-av">DR</div>
+          <div>
+            <div class="qc-name">Dr. Rachel Simmons</div>
+            <div class="qc-role">VP Academic Affairs, Community College</div>
+          </div>
+        </div>
+      </div>
+      <div class="qc">
+        <p class="qc-text">Student engagement went up 40% in the first semester. Turns out, students actually use an LMS when it doesn't look like a government website from 2003.</p>
+        <div class="qc-author">
+          <div class="qc-av">TK</div>
+          <div>
+            <div class="qc-name">Prof. Thomas Klein</div>
+            <div class="qc-role">Instructional Technology Lead, State University</div>
+          </div>
+        </div>
+      </div>
+      <div class="qc">
+        <p class="qc-text">The cost savings were significant, but what surprised us was how quickly faculty actually adopted it. Usually it takes years. This was weeks.</p>
+        <div class="qc-author">
+          <div class="qc-av">MJ</div>
+          <div>
+            <div class="qc-name">Maria Johnson</div>
+            <div class="qc-role">CIO, Private University</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-sec">
+  <div class="section-inner">
+    <div class="eyebrow" style="justify-content:center">
+      <svg class="ico" width="14" height="14" viewBox="0 0 256 256" fill="currentColor"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
+      Ready to make the move?
+    </div>
+    <h2 class="section-title" style="text-align:center">Stop paying for a legacy LMS<br>your faculty <em>hate using.</em></h2>
+    <p class="section-sub">Start a free trial today. Our migration team will reach out within 24 hours to plan your move — no commitment required.</p>
+    <div class="cta-group">
+      <a href="https://www.zoho.com/classes/signup.html" class="btn-primary" style="font-size:1rem;padding:16px 32px">
+        <svg class="ico" width="17" height="17" viewBox="0 0 256 256" fill="currentColor"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
+        Start Free Trial
+      </a>
+      <a href="mailto:classes@zoho.com" class="btn-ghost" style="font-size:1rem;padding:16px 28px">
+        <svg class="ico" width="17" height="17" viewBox="0 0 256 256" fill="currentColor"><path d="M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48Zm-96,85.15L52.57,64H203.43ZM98.71,128,40,181.81V74.19Zm11.84,10.85,12,11.05a8,8,0,0,0,10.82,0l12-11.05,58,53.15H52.57ZM157.29,128,216,74.18V181.82Z"/></svg>
+        Talk to Sales
+      </a>
+    </div>
+    <div class="cta-fine">
+      <span>
+        <svg class="ico" width="13" height="13" viewBox="0 0 256 256" fill="currentColor"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg>
+        No credit card required
+      </span>
+      <span>
+        <svg class="ico" width="13" height="13" viewBox="0 0 256 256" fill="currentColor"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg>
+        Free migration assessment
+      </span>
+      <span>
+        <svg class="ico" width="13" height="13" viewBox="0 0 256 256" fill="currentColor"><path d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg>
+        Live in as few as 3 weeks
+      </span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<footer>
+  <a href="https://zoho.com/classes" class="foot-logo">
+    <div style="width:26px;height:26px;background:var(--indigo);border-radius:6px;display:flex;align-items:center;justify-content:center">
+      <svg width="13" height="13" viewBox="0 0 256 256" fill="white"><path d="M251.76,88.94l-120-64a8,8,0,0,0-7.52,0l-120,64a8,8,0,0,0,0,14.12L32,117.87v48.42a15.91,15.91,0,0,0,4.06,10.65C49.16,191.53,78.51,208,128,208s78.84-16.47,91.94-31.06A15.91,15.91,0,0,0,224,166.29V117.87l16-8.53V176a8,8,0,0,0,16,0V96A8,8,0,0,0,251.76,88.94Z"/></svg>
+    </div>
+    Zoho <span>Classes</span>
+  </a>
+  <div class="foot-links">
+    <a href="https://www.zoho.com/classes/" class="foot-link">Product</a>
+    <a href="https://www.zoho.com/classes/signup.html" class="foot-link">Pricing</a>
+    <a href="mailto:classes@zoho.com" class="foot-link">Contact</a>
+    <a href="https://www.zoho.com/privacy.html" class="foot-link">Privacy</a>
+  </div>
+  <p>© 2025 Zoho Corporation. All rights reserved.</p>
+</footer>
+
+<script>
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  els.forEach(el => io.observe(el));
+  document.querySelectorAll('.feat-card').forEach((c,i) => { c.style.transitionDelay = (i%4)*0.07+'s'; });
+</script>
+</body>
+</html>
